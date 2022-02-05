@@ -1,1 +1,1 @@
-# kliensoldali-2022
+# Kliensoldali webprogramozás 2021/22 tavasz ELTE kurzus
