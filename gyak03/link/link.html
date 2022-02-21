@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <a href="https://google.com" is="confirmable-link">Google</a>
+    <a href="https://facebook.com">Facebook</a>
+
+    <script>
+      //       Jóváhagyó link
+      // Készíts egy olyan webkomponenst, amely egy linket úgy fejleszt fel, hogy rákattintva megkérdezi, hogy biztos akarja-e követni a linket!
+      // window.confirm használható, visszatérési értéke true/false az alapján, hogy a felhasználó elfogadja-e. Ha true-val tér vissza, történjen meg az átirányítás, ha false-szal, akkor ne.
+
+      class ConfirmableLink extends HTMLAnchorElement {
+        connectedCallback() {
+          this.addEventListener("click", (event) => {
+            const result = window.confirm(
+              `Biztos meg akarod nyitni a(z) "${event.target.href}" oldalt?`
+            );
+            if (!result) event.preventDefault();
+          });
+        }
+      }
+      customElements.define("confirmable-link", ConfirmableLink, {
+        extends: "a",
+      });
+    </script>
+  </body>
+</html>
