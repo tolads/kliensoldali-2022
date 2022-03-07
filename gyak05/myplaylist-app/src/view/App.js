@@ -1,6 +1,7 @@
 import logo from "../assets/logo.png";
 
 import Playlists from "./Playlists/Playlists";
+import Tracks from "./Tracks/Tracks";
 
 const App = () => {
   const activePage = "tracks";
@@ -38,7 +39,7 @@ const App = () => {
         </div>
       </nav>
 
-      {activePage === "playlists" && <Playlists />}
+      {activePage === "playlists" ? <Playlists /> : <Tracks />}
     </div>
   );
 };
