@@ -1,0 +1,7 @@
+1. A Playlists oldalon a bal oldali oszlop tartalmát kiemeltük a PlaylistsList komponensbe. Emeljük ki a jobb oldali oszlop tartalmát egy új PlaylistTracks komponensbe.
+2. A Playlists komponensben hozz létre egy `selectedPlaylist` konstansts, legyen az értéke a kiválasztott lista (`playlists.find(({ id }) => id === selectedPlaylistId)`).
+3. Csak akkor jelenítsd meg a PlaylistTracks komponenst, ha `selectedPlaylist`-nek van értéke.
+4. PlaylistTracks komponens kapja meg prop-ként a kiválasztott lista címét (`title` mező) és jelenítse meg ezt a címet.
+5. PlaylistTracks komponens kapja meg prop-ként a kiválasztott listához tartozó zeneszámokat (`tracks` mező). Ezt a listát renderelje a PlaylistTracks komponens (`.map`).
+6. Használja a PlaylistsTracks komponens a PlaylistCard komponenst.
+7. A PlaylistCard komponensben vegyünk fel egy új prop-ot `icon` néven, alapértelmezett értéke legyen "disc", PlaylistTracks komponensben adjunk át "music"-ot értékként.

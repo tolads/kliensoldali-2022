@@ -1,27 +1,26 @@
-import logo from "../assets/logo.png";
+import { Routes, Route, Link, NavLink } from "react-router-dom";
 
+import logo from "../assets/logo.png";
 import Playlists from "./Playlists/Playlists";
 import Tracks from "./Tracks/Tracks";
 
 const App = () => {
-  const activePage = "tracks";
-
   return (
     <div className="ui container">
       <nav className="ui secondary menu">
         <img src={logo} alt="logo" />
-        <a className="item" href="index.html">
+        <NavLink className="item" to="/">
           <i className="home icon"></i> Home
-        </a>
-        <a className="active item" href="playlists.html">
+        </NavLink>
+        <NavLink className="item" to="/playlists">
           <i className="headphones icon"></i> My Playlists
-        </a>
-        <a className="item" href="tracks.html">
+        </NavLink>
+        <NavLink className="item" to="/tracks">
           <i className="music icon"></i> Tracks
-        </a>
-        <a className="item" href="search.html">
+        </NavLink>
+        <NavLink className="item" to="/search">
           <i className="search icon"></i> Search
-        </a>
+        </NavLink>
         <div className="ui right dropdown item">
           John Doe
           <i className="dropdown icon"></i>
@@ -39,7 +38,11 @@ const App = () => {
         </div>
       </nav>
 
-      {activePage === "playlists" ? <Playlists /> : <Tracks />}
+      <Routes>
+        <Route path="/playlists" element={<Playlists />} />
+        <Route path="/tracks" element={<Tracks />} />
+        <Route path="*" element={<h1>Not found :(</h1>} />
+      </Routes>
     </div>
   );
 };
