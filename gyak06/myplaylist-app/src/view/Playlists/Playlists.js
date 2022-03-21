@@ -1,45 +1,31 @@
+import { useState } from "react";
+
 import bonjovi from "../../assets/bonjovi.jpg";
 import { examplePlaylists } from "../../domain/playlist";
+import CounterButton from "./CounterButton";
+import PlaylistsList from "./PlaylistsList";
 
 const Playlists = () => {
-  const activeId = 2;
-
-  const playlists = examplePlaylists.map((playlist) => ({
-    ...playlist,
-    active: playlist.id === activeId,
-  }));
-
-  const renderedPlaylists = playlists.map((playlist) => (
-    <div
-      key={playlist.id}
-      className={`item ${playlist.active ? "active" : ""}`}
-    >
-      <i className="large compact disc middle aligned icon"></i>
-      <div className="content">
-        <div className="header">{playlist.title}</div>
-        <div className="description">{`${playlist.tracks.length} songs`}</div>
-      </div>
-    </div>
-  ));
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(2);
+  console.log("render", selectedPlaylistId);
+  // ugyanaz:
+  // const state = useState(2);
+  // const selectedId = state.selectedId;
+  // const setSelectedId = state.setSelectedId;
+  // const selectedId = 2;
+  const playlists = examplePlaylists;
 
   return (
     <>
+      <CounterButton />
       <div className="ui container">
         <h1>My Playlists</h1>
         <div className="ui stackable two column grid">
-          <div className="ui six wide column">
-            <h3>Playlists</h3>
-            <div className="ui very relaxed selection list">
-              {renderedPlaylists}
-              <div className="item" id="newPlaylist">
-                <i className="large green plus middle aligned icon"></i>
-                <div className="content">
-                  <div className="header">New</div>
-                  <div className="description">Create a new playlist</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <PlaylistsList
+            playlists={playlists}
+            selectedId={selectedPlaylistId}
+            setSelectedId={setSelectedPlaylistId}
+          />
           <div className="ui ten wide column">
             <h3>Classics</h3>
             <div className="ui very relaxed selection list">
