@@ -4,9 +4,10 @@ import bonjovi from "../../assets/bonjovi.jpg";
 import { examplePlaylists } from "../../domain/playlist";
 import CounterButton from "./CounterButton";
 import PlaylistsList from "./PlaylistsList";
+import PlaylistTracks from "./PlaylistTracks";
 
 const Playlists = () => {
-  const [selectedPlaylistId, setSelectedPlaylistId] = useState(2);
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState();
   console.log("render", selectedPlaylistId);
   // ugyanaz:
   // const state = useState(2);
@@ -14,6 +15,10 @@ const Playlists = () => {
   // const setSelectedId = state.setSelectedId;
   // const selectedId = 2;
   const playlists = examplePlaylists;
+
+  const selectedPlaylist = playlists.find(
+    ({ id }) => id === selectedPlaylistId
+  );
 
   return (
     <>
@@ -26,46 +31,12 @@ const Playlists = () => {
             selectedId={selectedPlaylistId}
             setSelectedId={setSelectedPlaylistId}
           />
-          <div className="ui ten wide column">
-            <h3>Classics</h3>
-            <div className="ui very relaxed selection list">
-              <div className="item">
-                <i className="large music middle aligned icon"></i>
-                <div className="content">
-                  <div className="header">Highway to hell</div>
-                  <div className="description">AC/DC</div>
-                </div>
-              </div>
-              <div className="item">
-                <i className="large music middle aligned icon"></i>
-                <div className="content">
-                  <div className="header">Thunderstruck</div>
-                  <div className="description">AC/DC</div>
-                </div>
-              </div>
-              <div className="item">
-                <i className="large music middle aligned icon"></i>
-                <div className="content">
-                  <div className="header">Take me home country roads</div>
-                  <div className="description">John Denver</div>
-                </div>
-              </div>
-              <div className="active item">
-                <i className="large music middle aligned icon"></i>
-                <div className="content">
-                  <div className="header">It's my life</div>
-                  <div className="description">Bon Jovi</div>
-                </div>
-              </div>
-              <div className="item">
-                <i className="large music middle aligned icon"></i>
-                <div className="content">
-                  <div className="header">Livin' on a prayer</div>
-                  <div className="description">Bon Jovi</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {selectedPlaylist && (
+            <PlaylistTracks
+              title={selectedPlaylist.title}
+              tracks={selectedPlaylist.tracks}
+            />
+          )}
         </div>
         <div className="ui divider"></div>
         <div className="ui segment">
