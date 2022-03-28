@@ -1,3 +1,12 @@
+import { useState } from "react";
+
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import AddIcon from "@mui/icons-material/Add";
+
 const fields = [
   {
     label: "Author",
@@ -33,49 +42,63 @@ const fields = [
   },
 ];
 
-const AddNewTrackDialog = () => {
+const defaultState = fields.reduce(
+  (acc, curr) => ({ ...acc, [curr.name]: "" }),
+  {}
+);
+console.log({ defaultState });
+
+const AddNewTrackDialog = ({ shown, hide, onSubmit }) => {
+  const [values, setValues] = useState(defaultState);
+  const handleChange = (event) =>
+    setValues((prevValues) => ({
+      ...prevValues,
+      [event.target.name]: event.target.value,
+    }));
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onSubmit(values);
+    hide();
+  };
+
   return (
-    <div className="ui modal">
-      <i className="close icon"></i>
-      <div className="header">Add new Track</div>
-      <div className="image content">
+    <Dialog open={shown} onClose={hide}>
+      <DialogTitle>Add new Track</DialogTitle>
+      <DialogContent>
         <div className="description">
-          <form className="ui form">
-            <div className="two fields">
+          <form
+            id="add-net-track-form"
+            className="ui form"
+            onSubmit={handleSubmit}
+          >
+            {fields.map((field) => (
               <div className="field">
-                <label>Author</label>
-                <input required type="text" placeholder="John Williams" />
+                <label>{field.label}</label>
+                <input
+                  type="text"
+                  placeholder={field.placeholder}
+                  name={field.name}
+                  value={values[field.name]}
+                  onChange={handleChange}
+                />
               </div>
-              <div className="field">
-                <label>Track name</label>
-                <input required type="text" placeholder="Imperial March" />
-              </div>
-            </div>
-            <div className="three fields">
-              <div className="field">
-                <label>Spotify URL</label>
-                <input type="text" placeholder="https://" />
-              </div>
-              <div className="field">
-                <label>Lyrics URL</label>
-                <input type="text" placeholder="https://" />
-              </div>
-              <div className="field">
-                <label>Guitar tab URL</label>
-                <input type="text" placeholder="https://" />
-              </div>
-            </div>
+            ))}
           </form>
         </div>
-      </div>
-      <div className="actions">
-        <div className="ui black deny button">Cancel</div>
-        <div className="ui positive right labeled icon button">
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={hide}>Cancel</Button>
+        <Button
+          form="add-net-track-form"
+          type="submit"
+          variant="contained"
+          startIcon={<AddIcon />}
+        >
           Add
-          <i className="plus icon"></i>
-        </div>
-      </div>
-    </div>
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
