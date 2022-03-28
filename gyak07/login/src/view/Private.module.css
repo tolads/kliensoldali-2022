@@ -1,0 +1,11 @@
+.root {
+  width: 200px;
+  background-color: #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px auto;
+}
+
+.header {
+  text-align: center;
+}

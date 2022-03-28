@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 const Login = ({ login }) => {
   const userRef = useRef();
@@ -38,7 +40,16 @@ const Login = ({ login }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label htmlFor="user">Felhasználónév:</label>
+      <TextField
+        ref={userRef}
+        id="user"
+        name="user"
+        label="Felhasználónév"
+        variant="outlined"
+        value={user}
+        onChange={handleChange}
+      />
+      {/* <label htmlFor="user">Felhasználónév:</label>
       <input
         ref={userRef}
         type="text"
@@ -46,9 +57,17 @@ const Login = ({ login }) => {
         id="user"
         value={user}
         onChange={handleChange}
-      />
+      /> */}
       <br />
-      <label htmlFor="pwd">Jelszó:</label>
+      <TextField
+        id="pwd"
+        name="pwd"
+        label="Jelszó"
+        variant="outlined"
+        value={pwd}
+        onChange={handleChange}
+      />
+      {/* <label htmlFor="pwd">Jelszó:</label>
       <input
         ref={pwdRef}
         type="password"
@@ -56,9 +75,10 @@ const Login = ({ login }) => {
         id="pwd"
         value={pwd}
         onChange={handleChange}
-      />
+      /> */}
       <br />
-      <button type="submit">Bejelentkezés</button>
+      <Button type="submit">Bejelentkezés</Button>
+      {/* <button type="submit">Bejelentkezés</button> */}
     </form>
   );
 };
