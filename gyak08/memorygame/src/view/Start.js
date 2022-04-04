@@ -1,9 +1,11 @@
 import { useRef } from "react";
 
+import { usePairNumber } from "../context/PairNumber";
 import styles from "./Start.module.css";
 
 const Start = () => {
-  const setPairNumber = console.log;
+  const { setPairNumber } = usePairNumber();
+
   const selectRef = useRef();
 
   const handleSubmit = (event) => {

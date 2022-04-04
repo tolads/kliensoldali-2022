@@ -1,5 +1,7 @@
+import { usePairNumber } from "../context/PairNumber";
+
 const Won = () => {
-  const reset = console.log;
+  const { reset } = usePairNumber();
 
   return (
     <div style={{ textAlign: "center" }}>

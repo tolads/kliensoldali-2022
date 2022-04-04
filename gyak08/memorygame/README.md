@@ -4,11 +4,11 @@ Hozz létre egy memóriajátékot!
 
 Az állapotkezeléshez használd a React Context eszközt! Az _api_ mappában adott egy `getImages(n)` függvény, mellyel n darab macskás képet lehet lekérni a _thecatapi.com_ API-ról, használd ezt a függvényt, vizsgáld meg a kapott adatszerkezetet! A _view_ mappában előre el vannak készítve a React komponensek, csak az állapotkezelés hiányzik belőlük. Hozz létre `GameProgressContext` és `PairNumberContext` context objektumokat, és 1-1 React komponenst mely kezeli őket! Az egyes konstansokat cseréld le, hogy az alábbi logikát valósítsák meg:
 
-- `GameprogressContext`:
+- `PairNumberContext`:
   - pairNumber - hány kártyapár van a játékban
   - setPairNumber - előbbi állapotmező módosítására függvény
   - reset - előbbi állapotmező értékének törlése
-- `PairNumberContext`:
+- `GameProgressContext`:
   - catImages - tömb, az egyes kártyák képei összekeverve, ha n db párral játszunk, akkor 2\*n elemű a tömb. Keveréshez használható a `shuffle` függvény a _lodash_ könyvtárból
   - foundIds - a megtalált párok azonosítóit tartalmazó tömb
   - flip - függvény mellyel kártya felfordítható
