@@ -1,9 +1,11 @@
 import { createContext, useContext, useState } from "react";
 
+import useStoredState from "../hooks/useStoredState";
+
 const PairNumberContext = createContext();
 
 const PairNumberProvider = ({ children }) => {
-  const [pairNumber, setPairNumber] = useState(null);
+  const [pairNumber, setPairNumber] = useStoredState("pairNumber", null);
   const reset = () => setPairNumber(null);
 
   const context = { pairNumber, setPairNumber, reset };

@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useRef } from "react";
 import { shuffle } from "lodash";
 
 import { getImages } from "../api/api";
+import useStoredState from "../hooks/useStoredState";
 import { usePairNumber } from "./PairNumber";
 
 const GameProgressContext = createContext();
@@ -9,10 +10,12 @@ const GameProgressContext = createContext();
 const GameProgressProvider = ({ children }) => {
   const { pairNumber } = usePairNumber();
 
-  const [catImages, setCatImages] = useState([]);
+  const [catImages, setCatImages] = useStoredState("catImages", []);
   const [firstFlipped, setFirstFlipped] = useState(null);
   const [secondFlipped, setSecondFlipped] = useState(null);
-  const [foundIds, setFoundIds] = useState([]);
+  const [foundIds, setFoundIds] = useStoredState("foundIds", []);
+
+  const prevPairNumber = useRef();
 
   const flip = (idx) => {
     if (firstFlipped === null) {
@@ -44,13 +47,17 @@ const GameProgressProvider = ({ children }) => {
     if (!pairNumber) {
       setCatImages([]);
       setFoundIds([]);
+      prevPairNumber.current = pairNumber;
       return;
     }
 
-    getImages(pairNumber).then((response) => {
-      setCatImages(shuffle([...response, ...response]));
-    });
-  }, [pairNumber]);
+    if (prevPairNumber.current === null && pairNumber) {
+      getImages(pairNumber).then((response) => {
+        setCatImages(shuffle([...response, ...response]));
+      });
+    }
+    prevPairNumber.current = pairNumber;
+  }, [pairNumber, setCatImages, setFoundIds]);
 
   const context = { catImages, flip, isFlipped, foundIds };
 
