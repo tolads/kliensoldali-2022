@@ -1,6 +1,6 @@
 import PlaylistCard from "./PlaylistCard";
 
-const PlaylistTracks = ({ title, tracks }) => {
+const PlaylistTracks = ({ title, tracks, selectedId, setSelectedId }) => {
   return (
     <div className="ui ten wide column">
       <h3>{title}</h3>
@@ -11,6 +11,8 @@ const PlaylistTracks = ({ title, tracks }) => {
             title={track.title}
             description={track.artist}
             icon="music"
+            selected={track.id === selectedId}
+            select={() => setSelectedId(track.id)}
           />
         ))}
       </div>

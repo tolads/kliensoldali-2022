@@ -1,7 +1,6 @@
 import PlaylistCard from "./PlaylistCard";
 
-// const PlaylistsList = (props) => {
-const PlaylistsList = ({ playlists, selectedId, setSelectedId }) => {
+const PlaylistsList = ({ playlists, selectedId, setSelectedId, addNew }) => {
   const renderedPlaylists = playlists.map((playlist) => (
     <PlaylistCard
       key={playlist.id}
@@ -10,11 +9,6 @@ const PlaylistsList = ({ playlists, selectedId, setSelectedId }) => {
       description={`${playlist.tracks.length} songs`}
       select={() => setSelectedId(playlist.id)}
     />
-    // <PlaylistCard
-    //   key={playlist.id}
-    //   selected={playlist.id === selectedId}
-    //   {...playlist}
-    // />
   ));
 
   return (
@@ -24,7 +18,7 @@ const PlaylistsList = ({ playlists, selectedId, setSelectedId }) => {
         {renderedPlaylists}
         <div className="item" id="newPlaylist">
           <i className="large green plus middle aligned icon"></i>
-          <div className="content">
+          <div className="content" onClick={addNew}>
             <div className="header">New</div>
             <div className="description">Create a new playlist</div>
           </div>
