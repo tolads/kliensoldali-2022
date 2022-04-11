@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import cn from "classnames";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -43,7 +44,7 @@ const fields = [
 ];
 
 const defaultState = fields.reduce(
-  (acc, curr) => ({ ...acc, [curr.name]: "" }),
+  (acc, curr) => ({ ...acc, [curr.name]: { value: "", touched: false } }),
   {}
 );
 console.log({ defaultState });
@@ -53,7 +54,18 @@ const AddNewTrackDialog = ({ shown, hide, onSubmit }) => {
   const handleChange = (event) =>
     setValues((prevValues) => ({
       ...prevValues,
-      [event.target.name]: event.target.value,
+      [event.target.name]: {
+        value: event.target.value,
+        touched: prevValues[event.target.name].touched,
+      },
+    }));
+  const handleBlur = (event) =>
+    setValues((prevValues) => ({
+      ...prevValues,
+      [event.target.name]: {
+        touched: true,
+        value: prevValues[event.target.name].value,
+      },
     }));
 
   const handleSubmit = (event) => {
@@ -61,6 +73,19 @@ const AddNewTrackDialog = ({ shown, hide, onSubmit }) => {
     onSubmit(values);
     hide();
   };
+
+  useEffect(() => {
+    setValues(defaultState);
+  }, [shown]);
+
+  const errors = fields.reduce((acc, curr) => {
+    if (curr.required && values[curr.name].value.trim() === "") {
+      acc[curr.name] = `The field ${curr.label} is required.`;
+    }
+    return acc;
+  }, {});
+
+  const canSubmit = !Object.values(errors).length;
 
   return (
     <Dialog open={shown} onClose={hide}>
@@ -73,18 +98,31 @@ const AddNewTrackDialog = ({ shown, hide, onSubmit }) => {
             onSubmit={handleSubmit}
           >
             {fields.map((field) => (
-              <div className="field">
+              <div
+                key={field.name}
+                className={cn("field", {
+                  error: errors[field.name] && values[field.name].touched,
+                })}
+              >
                 <label>{field.label}</label>
                 <input
                   type="text"
                   placeholder={field.placeholder}
                   name={field.name}
-                  value={values[field.name]}
+                  value={values[field.name].value}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                 />
               </div>
             ))}
           </form>
+          <ul>
+            {Object.entries(errors)
+              .filter(([name]) => values[name].touched)
+              .map(([name, errorMessage]) => (
+                <li key={name}>{errorMessage}</li>
+              ))}
+          </ul>
         </div>
       </DialogContent>
       <DialogActions>
@@ -94,6 +132,7 @@ const AddNewTrackDialog = ({ shown, hide, onSubmit }) => {
           type="submit"
           variant="contained"
           startIcon={<AddIcon />}
+          disabled={!canSubmit}
         >
           Add
         </Button>
