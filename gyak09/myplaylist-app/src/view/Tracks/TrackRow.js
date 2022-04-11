@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
-import { examplePlaylists } from "../../domain/playlist";
+import { getPlaylists } from "../../store/playlists";
 
 const TrackRow = ({ artist, title, onDelete }) => {
-  const playlists = examplePlaylists;
+  const playlists = useSelector(getPlaylists);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const showDropdown = (event) => setAnchorEl(event.currentTarget);

@@ -1,18 +1,18 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { exampleTracks } from "../../domain/track";
+import { getTracks, deleteTrack } from "../../store/tracks";
 import AddNewTrackDialog from "./AddNewTrackDialog";
 import TrackRow from "./TrackRow";
 
 const Tracks = () => {
-  const [tracks, setTracks] = useState(exampleTracks);
+  const dispatch = useDispatch();
+  const tracks = useSelector(getTracks);
 
   const [dialogShown, setDialogShown] = useState(false);
   const showDialog = () => setDialogShown(true);
   const hideDialog = () => setDialogShown(false);
-
-  const deleteTrack = (id) =>
-    setTracks((prevTracks) => prevTracks.filter((track) => track.id !== id));
 
   return (
     <>
@@ -44,7 +44,7 @@ const Tracks = () => {
               <TrackRow
                 key={track.id}
                 {...track}
-                onDelete={() => deleteTrack(track.id)}
+                onDelete={() => dispatch(deleteTrack(track.id))}
               />
             ))}
           </tbody>

@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { examplePlaylists } from "../../domain/playlist";
+import { addPlaylist, getPlaylists } from "../../store/playlists";
 import PlaylistsList from "./PlaylistsList";
 import PlaylistTracks from "./PlaylistTracks";
 import Track from "./Track";
 import AddNewPlaylist from "./AddNewPlaylist";
 
 const Playlists = () => {
-  const [playlists, setPlaylists] = useState(examplePlaylists);
+  const dispatch = useDispatch();
+  const playlists = useSelector(getPlaylists);
+
   const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
   const selectedPlaylist = playlists.find(
     ({ id }) => id === selectedPlaylistId
@@ -21,10 +25,7 @@ const Playlists = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const addNewPlaylist = (title) =>
-    setPlaylists((prevPlaylists) => [
-      ...prevPlaylists,
-      { id: Date.now(), title, tracks: [] },
-    ]);
+    dispatch(addPlaylist({ id: Date.now(), title, tracks: [] }));
 
   useEffect(() => {
     setSelectedTrackId(null);

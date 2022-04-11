@@ -1,10 +1,23 @@
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Routes, Route, Link, NavLink } from "react-router-dom";
 
 import logo from "../assets/logo.png";
+import { examplePlaylists } from "../domain/playlist";
+import { exampleTracks } from "../domain/track";
+import { setPlaylists } from "../store/playlists";
+import { setTracks } from "../store/tracks";
 import Playlists from "./Playlists/Playlists";
 import Tracks from "./Tracks/Tracks";
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setPlaylists(examplePlaylists));
+    dispatch(setTracks(exampleTracks));
+  }, [dispatch]);
+
   return (
     <div className="ui container">
       <nav className="ui secondary menu">
