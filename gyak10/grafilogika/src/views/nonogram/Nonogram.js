@@ -1,20 +1,37 @@
+import { useDispatch, useSelector } from "react-redux";
+
+import { CELL_STATE, selectTable } from "../../state/nonogramSlice";
 import styles from "./Nonogram.module.css";
 
+const getClassName = (value) => {
+  if (value === CELL_STATE.SELECTED) {
+    return styles.black;
+  }
+  if (value === CELL_STATE.DESELECTED) {
+    return styles.gray;
+  }
+  return styles.white;
+};
+
 export const Nonogram = () => {
+  const dispatch = useDispatch();
+  const { table, leftNumbers, upperNumbers } = useSelector(selectTable);
+
+  const handleClick = (row, col) => {
+    dispatch({ type: "TOGGLE_CELL", payload: { x: col, y: row } });
+  };
+
   const upperNumbersDOM = (
     <table className={styles.upperNumbers}>
       <tbody>
         <tr>
-          <td>
-            <span>1</span>
-            <span>2</span>
-          </td>
-          <td>
-            <span>1</span>
-          </td>
-          <td>
-            <span>1</span>
-          </td>
+          {upperNumbers.map((col, colIdx) => (
+            <td key={colIdx}>
+              {col.map((num, numIdx) => (
+                <span key={numIdx}>{num}</span>
+              ))}
+            </td>
+          ))}
         </tr>
       </tbody>
     </table>
@@ -23,25 +40,15 @@ export const Nonogram = () => {
   const leftNumbersDOM = (
     <table className={styles.leftNumbers}>
       <tbody>
-        <tr>
-          <td>
-            <span>1</span>
-            <span>1</span>
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <span>1</span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span>2</span>
-          </td>
-        </tr>
+        {upperNumbers.map((row, rowIdx) => (
+          <tr key={rowIdx}>
+            <td>
+              {row.map((num, numIdx) => (
+                <span key={numIdx}>{num}</span>
+              ))}
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );
@@ -49,26 +56,17 @@ export const Nonogram = () => {
   const tableDOM = (
     <table className={styles.table}>
       <tbody>
-        <tr>
-          <td className={styles.white}></td>
-          <td className={styles.gray}></td>
-          <td className={styles.black}></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+        {table.map((row, rowIdx) => (
+          <tr key={rowIdx}>
+            {row.map((cell, colIdx) => (
+              <td
+                key={colIdx}
+                className={getClassName(cell)}
+                onClick={() => handleClick(rowIdx, colIdx)}
+              ></td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   );
