@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = { solution: [], table: [] };
 
 export const CELL_STATE = {
@@ -6,35 +8,27 @@ export const CELL_STATE = {
   DESELECTED: 2,
 };
 
-const nonogramReducer = (state = initialState, action) => {
-  if (action.type === "START") {
-    return {
-      solution: action.payload.map((line) =>
+const nonogramSlice = createSlice({
+  name: "nonogram",
+  initialState,
+  reducers: {
+    start: (state, action) => {
+      state.solution = action.payload.map((line) =>
         line.split("").map((c) => c === "#")
-      ),
-      table: action.payload.map((row) =>
-        row.split("").map(() => CELL_STATE.EMPTY)
-      ),
-    };
-  }
+      );
+      state.table = state.solution.map((row) =>
+        row.map(() => CELL_STATE.EMPTY)
+      );
+    },
+    toggleCell: (state, action) => {
+      const { x, y } = action.payload;
+      state.table[y][x] = (state.table[y][x] + 1) % 3;
+    },
+  },
+});
 
-  if (action.type === "TOGGLE_CELL") {
-    return {
-      ...state,
-      table: state.table.map((row, rowIdx) => {
-        if (rowIdx !== action.payload.y) return row;
-        return row.map((cell, colIdx) => {
-          if (colIdx !== action.payload.x) return cell;
-          return (cell + 1) % 3;
-        });
-      }),
-    };
-  }
-
-  return state;
-};
-
-export default nonogramReducer;
+export default nonogramSlice;
+export const { start, toggleCell } = nonogramSlice.actions;
 
 export const selectTable = (state) => {
   const { solution, table } = state;

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { CELL_STATE, selectTable } from "../../state/nonogramSlice";
+import { CELL_STATE, selectTable, toggleCell } from "../../state/nonogramSlice";
 import styles from "./Nonogram.module.css";
 
 const getClassName = (value) => {
@@ -18,7 +18,8 @@ export const Nonogram = () => {
   const { table, leftNumbers, upperNumbers } = useSelector(selectTable);
 
   const handleClick = (row, col) => {
-    dispatch({ type: "TOGGLE_CELL", payload: { x: col, y: row } });
+    // dispatch({ type: "TOGGLE_CELL", payload: { x: col, y: row } });
+    dispatch(toggleCell({ x: col, y: row }));
   };
 
   const upperNumbersDOM = (
@@ -40,7 +41,7 @@ export const Nonogram = () => {
   const leftNumbersDOM = (
     <table className={styles.leftNumbers}>
       <tbody>
-        {upperNumbers.map((row, rowIdx) => (
+        {leftNumbers.map((row, rowIdx) => (
           <tr key={rowIdx}>
             <td>
               {row.map((num, numIdx) => (
