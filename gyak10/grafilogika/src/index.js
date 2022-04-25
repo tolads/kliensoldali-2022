@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 
 import { store } from "./state/store";
-import { start } from "./state/nonogramSlice";
+import { start as kismacskaStart } from "./state/nonogramSlice";
 import App from "./views/App";
 import "./index.css";
 
@@ -17,12 +17,12 @@ root.render(
   </React.StrictMode>
 );
 
-console.log("Initial state: ", store.getState());
+// console.log("Initial state: ", store.getState());
 
-store.subscribe(() => {
-  console.log("New state: ", store.getState());
-});
-// store.dispatch({ type: "START", payload: ["# #", " # ", "# #"] });
-console.log("start returns: ", start(["# #", " # ", "# #"]));
-store.dispatch(start(["# #", " # ", "# #"]));
-store.dispatch({ type: "TOGGLE_CELL", payload: { x: 2, y: 1 } });
+// store.subscribe(() => {
+//   console.log("New state: ", store.getState());
+// });
+// // store.dispatch({ type: "START", payload: ["# #", " # ", "# #"] });
+// console.log("start returns: ", kismacskaStart(["# #", " # ", "# #"]));
+// store.dispatch(kismacskaStart(["# #", " # ", "# #"]));
+// store.dispatch({ type: "TOGGLE_CELL", payload: { x: 2, y: 1 } });

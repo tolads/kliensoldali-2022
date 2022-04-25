@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { solution: [], table: [] };
+const initialState = { id: null, solution: [], table: [] };
 
 export const CELL_STATE = {
   EMPTY: 0,
@@ -13,7 +13,8 @@ const nonogramSlice = createSlice({
   initialState,
   reducers: {
     start: (state, action) => {
-      state.solution = action.payload.map((line) =>
+      state.id = action.payload.id;
+      state.solution = action.payload.solution.map((line) =>
         line.split("").map((c) => c === "#")
       );
       state.table = state.solution.map((row) =>
@@ -28,6 +29,7 @@ const nonogramSlice = createSlice({
 });
 
 export default nonogramSlice;
+console.log({ nonogramSlice });
 export const { start, toggleCell } = nonogramSlice.actions;
 
 export const selectTable = (state) => {
@@ -55,3 +57,5 @@ export const selectTable = (state) => {
 
   return { table, leftNumbers, upperNumbers };
 };
+
+export const selectId = (state) => state.id;
