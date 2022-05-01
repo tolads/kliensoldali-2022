@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { CELL_STATE, selectTable, toggleCell } from "../../state/nonogramSlice";
 import styles from "./Nonogram.module.css";
 
-const getClassName = (value) => {
+const getClassName = (value, solution) => {
+  if (
+    (value === CELL_STATE.SELECTED && solution === false) ||
+    (value === CELL_STATE.DESELECTED && solution === true)
+  ) {
+    return styles.red;
+  }
   if (value === CELL_STATE.SELECTED) {
     return styles.black;
   }
@@ -15,7 +21,8 @@ const getClassName = (value) => {
 
 export const Nonogram = () => {
   const dispatch = useDispatch();
-  const { table, leftNumbers, upperNumbers } = useSelector(selectTable);
+  const { table, leftNumbers, upperNumbers, solution, solutionChecked } =
+    useSelector(selectTable);
 
   const handleClick = (row, col) => {
     // dispatch({ type: "TOGGLE_CELL", payload: { x: col, y: row } });
@@ -62,7 +69,10 @@ export const Nonogram = () => {
             {row.map((cell, colIdx) => (
               <td
                 key={colIdx}
-                className={getClassName(cell)}
+                className={getClassName(
+                  cell,
+                  solutionChecked ? solution[rowIdx][colIdx] : undefined
+                )}
                 onClick={() => handleClick(rowIdx, colIdx)}
               ></td>
             ))}
