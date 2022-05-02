@@ -54,7 +54,7 @@ export const checkSolution = () => {
 };
 
 export const selectTable = (state) => {
-  const { solution, table, solutionChecked } = state;
+  const { solution, table, solutionChecked } = state.nonogram;
 
   const leftNumbers = solution.map((row) =>
     row
@@ -79,4 +79,4 @@ export const selectTable = (state) => {
   return { table, leftNumbers, upperNumbers, solution, solutionChecked };
 };
 
-export const selectId = (state) => state.id;
+export const selectId = (state) => state.nonogram.id;

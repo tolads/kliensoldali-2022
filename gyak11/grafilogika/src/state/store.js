@@ -1,7 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import nonogramSlice from "./nonogramSlice";
+import nonogramListSlice from "./nonogramListSlice";
 
 export const store = configureStore({
-  reducer: nonogramSlice.reducer,
+  reducer: {
+    nonogram: nonogramSlice.reducer,
+    nonogramList: nonogramListSlice.reducer,
+  },
 });
