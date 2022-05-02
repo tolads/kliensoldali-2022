@@ -2,17 +2,13 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectId, start, checkSolution } from "../state/nonogramSlice";
-import { selectList, fetchList } from "../state/nonogramListSlice";
+import { useGetNonogramsQuery } from "../state/nonogramApiSlice";
 import { Nonogram } from "./nonogram/Nonogram";
 
 function App() {
   const dispatch = useDispatch();
   const selectedPuzzleId = useSelector(selectId);
-  const puzzles = useSelector(selectList);
-
-  useEffect(() => {
-    dispatch(fetchList());
-  }, [dispatch]);
+  const { data: puzzles, isLoading } = useGetNonogramsQuery();
 
   const handleChange = (event) => {
     const id = Number(event.target.value);
@@ -25,6 +21,14 @@ function App() {
   const handleCheck = () => {
     dispatch(checkSolution());
   };
+
+  if (isLoading) {
+    return "Betöltés alatt...";
+  }
+
+  if (!puzzles) {
+    return;
+  }
 
   return (
     <>
