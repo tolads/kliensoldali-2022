@@ -1,12 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import puzzles from "../domain/puzzles.json";
-import {
-  selectId,
-  start,
-  startSolutionCheck,
-  finishSolutionCheck,
-} from "../state/nonogramSlice";
+import { selectId, start, checkSolution } from "../state/nonogramSlice";
 import { Nonogram } from "./nonogram/Nonogram";
 
 function App() {
@@ -22,8 +17,7 @@ function App() {
   };
 
   const handleCheck = () => {
-    dispatch(startSolutionCheck());
-    setTimeout(() => dispatch(finishSolutionCheck()), 3000);
+    dispatch(checkSolution());
   };
 
   return (

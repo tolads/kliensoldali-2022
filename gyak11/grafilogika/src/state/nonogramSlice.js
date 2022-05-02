@@ -42,8 +42,16 @@ const nonogramSlice = createSlice({
 
 export default nonogramSlice;
 
-export const { start, toggleCell, startSolutionCheck, finishSolutionCheck } =
+const { start, toggleCell, startSolutionCheck, finishSolutionCheck } =
   nonogramSlice.actions;
+export { start, toggleCell };
+
+export const checkSolution = () => {
+  return (dispatch) => {
+    dispatch(startSolutionCheck());
+    setTimeout(() => dispatch(finishSolutionCheck()), 3000);
+  };
+};
 
 export const selectTable = (state) => {
   const { solution, table, solutionChecked } = state;
