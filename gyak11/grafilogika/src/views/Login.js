@@ -2,7 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
+import {
+  useLoginMutation,
+  useRegisterMutation,
+} from "../state/nonogramApiSlice";
+
 export const Login = () => {
+  const [login] = useLoginMutation();
+  const [register] = useRegisterMutation();
+
   const emailRef = useRef();
 
   const [values, setValues] = useState({ email: "", pwd: "" });
@@ -19,10 +27,24 @@ export const Login = () => {
 
   const handleLogin = () => {
     console.log("login");
+    login({ email, password: pwd })
+      .unwrap()
+      .then((data) => {
+        console.log("Sikeres bejelentkezés");
+        console.log(data);
+      })
+      .catch(() => console.log("Sikertelen bejelentkezés"));
   };
 
   const handleRegister = () => {
     console.log("register");
+    register({ email, password: pwd })
+      .unwrap()
+      .then((data) => {
+        console.log("Sikeres regisztráció");
+        console.log(data);
+      })
+      .catch(() => console.log("Sikertelen regisztráció"));
   };
 
   return (

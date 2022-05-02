@@ -8,6 +8,20 @@ const nonogramApiSlice = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (build) => ({
+    register: build.mutation({
+      query: (body) => ({
+        url: "users",
+        method: "POST",
+        body,
+      }),
+    }),
+    login: build.mutation({
+      query: (body) => ({
+        url: "authentication",
+        method: "POST",
+        body: { ...body, strategy: "local" },
+      }),
+    }),
     getNonograms: build.query({
       query: () => ({ url: "puzzles" }),
       transformResponse: (response) =>
@@ -20,6 +34,8 @@ const nonogramApiSlice = createApi({
   }),
 });
 
-export const { useGetNonogramsQuery } = nonogramApiSlice;
+console.log(nonogramApiSlice);
+export const { useGetNonogramsQuery, useLoginMutation, useRegisterMutation } =
+  nonogramApiSlice;
 
 export default nonogramApiSlice;
