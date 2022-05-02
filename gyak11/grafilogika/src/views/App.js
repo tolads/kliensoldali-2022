@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectId, start, checkSolution } from "../state/nonogramSlice";
 import { useGetNonogramsQuery } from "../state/nonogramApiSlice";
 import { Nonogram } from "./nonogram/Nonogram";
+import { Login } from "./Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -21,6 +22,8 @@ function App() {
   const handleCheck = () => {
     dispatch(checkSolution());
   };
+
+  return <Login />;
 
   if (isLoading) {
     return "Betöltés alatt...";
