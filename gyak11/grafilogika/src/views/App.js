@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectId, start, checkSolution } from "../state/nonogramSlice";
-import { selectList, setList } from "../state/nonogramListSlice";
+import { selectList, fetchList } from "../state/nonogramListSlice";
 import { Nonogram } from "./nonogram/Nonogram";
 
 function App() {
@@ -11,16 +11,7 @@ function App() {
   const puzzles = useSelector(selectList);
 
   useEffect(() => {
-    fetch("http://localhost:3030/puzzles")
-      .then((response) => response.json())
-      .then((response) => {
-        const convertedData = response.data.map((item) => ({
-          id: item.id,
-          name: item.title,
-          table: JSON.parse(item.puzzle),
-        }));
-        dispatch(setList(convertedData));
-      });
+    dispatch(fetchList());
   }, [dispatch]);
 
   const handleChange = (event) => {
