@@ -20,12 +20,8 @@ const nonogramSlice = createSlice({
     start: (state, action) => {
       state.solutionChecked = false;
       state.id = action.payload.id;
-      state.solution = action.payload.solution.map((line) =>
-        line.split("").map((c) => c === "#")
-      );
-      state.table = state.solution.map((row) =>
-        row.map(() => CELL_STATE.EMPTY)
-      );
+      state.solution = action.payload.solution.map((line) => line.split("").map((c) => c === "#"));
+      state.table = state.solution.map((row) => row.map(() => CELL_STATE.EMPTY));
     },
     toggleCell: (state, action) => {
       const { x, y } = action.payload;
@@ -42,8 +38,7 @@ const nonogramSlice = createSlice({
 
 export default nonogramSlice;
 
-const { start, toggleCell, startSolutionCheck, finishSolutionCheck } =
-  nonogramSlice.actions;
+const { start, toggleCell, startSolutionCheck, finishSolutionCheck } = nonogramSlice.actions;
 export { start, toggleCell };
 
 export const checkSolution = () => {
@@ -77,6 +72,17 @@ export const selectTable = (state) => {
     : [];
 
   return { table, leftNumbers, upperNumbers, solution, solutionChecked };
+};
+
+export const selectSolved = (state) => {
+  const { solution, table } = state.nonogram;
+  return table.every((row, rowIdx) =>
+    row.every(
+      (cell, colIdx) =>
+        (cell === CELL_STATE.SELECTED && solution[rowIdx][colIdx]) ||
+        (cell !== CELL_STATE.SELECTED && !solution[rowIdx][colIdx])
+    )
+  );
 };
 
 export const selectId = (state) => state.nonogram.id;

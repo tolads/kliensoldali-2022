@@ -1,15 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 
+import authSlice from "./authSlice";
 import nonogramSlice from "./nonogramSlice";
-// import nonogramListSlice from "./nonogramListSlice";
 import nonogramApiSlice from "./nonogramApiSlice";
 
 export const store = configureStore({
   reducer: {
+    auth: authSlice.reducer,
     nonogram: nonogramSlice.reducer,
-    // nonogramList: nonogramListSlice.reducer,
     nonogramApi: nonogramApiSlice.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(nonogramApiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(nonogramApiSlice.middleware),
 });

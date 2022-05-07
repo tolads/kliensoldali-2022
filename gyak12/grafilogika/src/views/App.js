@@ -1,60 +1,32 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 
-import { selectId, start, checkSolution } from "../state/nonogramSlice";
-import { useGetNonogramsQuery } from "../state/nonogramApiSlice";
+import { selectCurrentUser } from "../state/authSlice";
 import { Nonogram } from "./nonogram/Nonogram";
 import { Login } from "./Login";
+import { List } from "./List";
+import { CreateNonogram } from "./CreateNonogram";
+import { User } from "./User";
 
 function App() {
-  const dispatch = useDispatch();
-  const selectedPuzzleId = useSelector(selectId);
-  const { data: puzzles, isLoading } = useGetNonogramsQuery();
-
-  const handleChange = (event) => {
-    const id = Number(event.target.value);
-
-    dispatch(
-      start({ id, solution: puzzles.find((item) => item.id === id).table })
-    );
-  };
-
-  const handleCheck = () => {
-    dispatch(checkSolution());
-  };
-
-  return <Login />;
-
-  if (isLoading) {
-    return "Betöltés alatt...";
-  }
-
-  if (!puzzles) {
-    return;
-  }
+  const user = useSelector(selectCurrentUser);
 
   return (
-    <>
+    <div>
       <h1>Grafilogika</h1>
-      <label>
-        Rejtvény:{" "}
-        <select
-          value={selectedPuzzleId === null ? "" : selectedPuzzleId}
-          onChange={handleChange}
-        >
-          <option disabled value="">
-            Válassz...
-          </option>
-          {puzzles.map((puzzle) => (
-            <option key={puzzle.id} value={puzzle.id}>
-              {puzzle.name}
-            </option>
-          ))}
-        </select>
-      </label>
-      <button onClick={handleCheck}>Ellenőrzés</button>
-      <Nonogram />
-    </>
+      {!user ? (
+        <Login />
+      ) : (
+        <>
+          <Routes>
+            <Route path="/" element={<List />} />
+            <Route path="/new" element={<CreateNonogram />} />
+            <Route path="/nonograms/:id" element={<Nonogram />} />
+          </Routes>
+          <User />
+        </>
+      )}
+    </div>
   );
 }
 

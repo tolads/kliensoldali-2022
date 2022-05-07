@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 
-import { CELL_STATE, selectTable, toggleCell } from "../../state/nonogramSlice";
+import { useGetNonogramQuery } from "../../state/nonogramApiSlice";
+import {
+  CELL_STATE,
+  checkSolution,
+  selectSolved,
+  selectTable,
+  start,
+  toggleCell,
+} from "../../state/nonogramSlice";
 import styles from "./Nonogram.module.css";
 
 const getClassName = (value, solution) => {
@@ -20,14 +30,32 @@ const getClassName = (value, solution) => {
 };
 
 export const Nonogram = () => {
+  const { id } = useParams();
+  const { data, isLoading } = useGetNonogramQuery(id);
   const dispatch = useDispatch();
-  const { table, leftNumbers, upperNumbers, solution, solutionChecked } =
-    useSelector(selectTable);
+  const { table, leftNumbers, upperNumbers, solution, solutionChecked } = useSelector(selectTable);
+  const solved = useSelector(selectSolved);
 
   const handleClick = (row, col) => {
-    // dispatch({ type: "TOGGLE_CELL", payload: { x: col, y: row } });
     dispatch(toggleCell({ x: col, y: row }));
   };
+
+  const handleCheck = () => {
+    dispatch(checkSolution());
+  };
+
+  useEffect(() => {
+    if (!data) return;
+    dispatch(start({ id: data.id, solution: data.table }));
+  }, [data, dispatch]);
+
+  if (isLoading) {
+    return "Betöltés alatt...";
+  }
+
+  if (!data) {
+    return "Nem található a feladvány";
+  }
 
   const upperNumbersDOM = (
     <table className={styles.upperNumbers}>
@@ -83,17 +111,25 @@ export const Nonogram = () => {
   );
 
   return (
-    <table className={styles.root}>
-      <tbody>
-        <tr>
-          <td></td>
-          <td>{upperNumbersDOM}</td>
-        </tr>
-        <tr>
-          <td>{leftNumbersDOM}</td>
-          <td>{tableDOM}</td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <h2>{data.name}</h2>
+      <div>
+        <Link to="/">Vissza</Link>
+        <button onClick={handleCheck}>Ellenőrzés</button>
+        {solved && "Gratulálok!"}
+      </div>
+      <table className={styles.root}>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>{upperNumbersDOM}</td>
+          </tr>
+          <tr>
+            <td>{leftNumbersDOM}</td>
+            <td>{tableDOM}</td>
+          </tr>
+        </tbody>
+      </table>
+    </>
   );
 };

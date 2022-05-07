@@ -1,17 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import {
-  useLoginMutation,
-  useRegisterMutation,
-} from "../state/nonogramApiSlice";
+import { setCredentials } from "../state/authSlice";
+import { useLoginMutation, useRegisterMutation } from "../state/nonogramApiSlice";
 
 export const Login = () => {
+  const dispatch = useDispatch();
   const [login] = useLoginMutation();
   const [register] = useRegisterMutation();
-
-  const emailRef = useRef();
 
   const [values, setValues] = useState({ email: "", pwd: "" });
   const { email, pwd } = values;
@@ -21,17 +19,13 @@ export const Login = () => {
       [event.target.name]: event.target.value,
     }));
 
-  useEffect(() => {
-    emailRef.current.focus();
-  }, []);
-
   const handleLogin = () => {
     console.log("login");
     login({ email, password: pwd })
       .unwrap()
       .then((data) => {
         console.log("Sikeres bejelentkezés");
-        console.log(data);
+        dispatch(setCredentials(data));
       })
       .catch(() => console.log("Sikertelen bejelentkezés"));
   };
@@ -49,8 +43,9 @@ export const Login = () => {
 
   return (
     <form>
+      <h2>Bejelentkezés</h2>
       <TextField
-        ref={emailRef}
+        autoFocus
         id="email"
         name="email"
         label="Email cím"
