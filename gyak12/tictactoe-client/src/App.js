@@ -3,6 +3,8 @@ import { useLocation } from "react-router";
 import "./App.css";
 
 //TODO: socket létrehozása
+import io from "socket.io-client";
+const socket = io("http://localhost:3031");
 
 function App() {
   const [game, setGame] = useState(Array(9).fill(""));
@@ -24,10 +26,12 @@ function App() {
   const sendTurn = (index) => {
     if (!game[index] && !winner && myTurn && hasOpponent) {
       //TODO: lépés elküldése (reqTurn)
+      socket.emit("reqTurn", JSON.stringify({ room, value: xo, index }));
     }
   };
 
   const sendRestart = () => {
+    socket.emit("reqRestart", JSON.stringify({ room }));
     //TODO: játék újrakezdésének jelzése a szerver felé (reqStart)
   };
 
@@ -56,6 +60,18 @@ function App() {
 
   useEffect(() => {
     //TODO: szervertől kapott válaszok kezelése (playerTurn, restart, opponent_joined)
+    socket.on("opponent_joined", () => {
+      setHasOpponent(true);
+      setShare(false);
+    });
+
+    socket.on("playerTurn", (data) => {
+      setTurnData(data);
+    });
+
+    socket.on("restart", () => {
+      restart();
+    });
   }, []);
 
   useEffect(() => {
@@ -75,6 +91,14 @@ function App() {
 
   useEffect(() => {
     //TODO: szoba létrehozása, csatlakozás (create, join)
+    if (!paramsRoom) {
+      const newRoomName = random();
+      setRoom(newRoomName);
+      socket.emit("create", newRoomName);
+    } else {
+      socket.emit("join", paramsRoom);
+      setXO("O");
+    }
   }, [paramsRoom]);
 
   return (

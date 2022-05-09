@@ -19,6 +19,7 @@ const nonogramApiSlice = createApi({
       if (token) {
         headers.set("authorization", `Bearer ${token}`);
       }
+      headers.set("alma", "fa");
       return headers;
     },
   }),
@@ -45,7 +46,7 @@ const nonogramApiSlice = createApi({
           name: item.title,
           table: parsePuzzle(item.puzzle),
         })),
-      providesTags: ["Nonogram"],
+      providesTags: ["Nonogram", "korte"],
     }),
     getNonogram: builder.query({
       query: (id) => ({ url: `puzzles/${id}` }),
@@ -62,7 +63,7 @@ const nonogramApiSlice = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Nonogram"],
+      invalidatesTags: ["Nonogram", "alma"],
     }),
   }),
 });

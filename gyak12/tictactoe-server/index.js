@@ -28,6 +28,7 @@ io.on("connection", (socket) => {
 
   socket.on("create", (room) => {
     socket.join(room);
+    console.log("created room", room);
   });
 
   socket.on("join", (room) => {
